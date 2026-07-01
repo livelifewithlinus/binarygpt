@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import VariableProximity from '@/components/variable-proximity';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
@@ -21,6 +22,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const { isDesktop, isTablet } = useDevice();
+    const heading_ref = useRef<HTMLDivElement>(null);
 
     return (
         <React.Fragment>
@@ -40,16 +42,25 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                             })}
                         >
                             {!has_dashboard_strategies && (
-                                <Text
-                                    className='title'
-                                    as='h2'
-                                    color='prominent'
-                                    size={isDesktop ? 'sm' : 's'}
-                                    lineHeight='xxl'
-                                    weight='bold'
-                                >
-                                    {localize('Load or build your bot')}
-                                </Text>
+                                <div ref={heading_ref} style={{ position: 'relative' }}>
+                                    <Text
+                                        className='title'
+                                        as='h2'
+                                        color='prominent'
+                                        size={isDesktop ? 'sm' : 's'}
+                                        lineHeight='xxl'
+                                        weight='bold'
+                                    >
+                                        <VariableProximity
+                                            label={localize('Load or build your bot')}
+                                            fromFontVariationSettings="'wght' 400, 'opsz' 9"
+                                            toFontVariationSettings="'wght' 1000, 'opsz' 40"
+                                            containerRef={heading_ref}
+                                            radius={100}
+                                            falloff='linear'
+                                        />
+                                    </Text>
+                                </div>
                             )}
                             <Text
                                 as='p'
